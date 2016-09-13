@@ -1,0 +1,15 @@
+Use case:
+This program is a game that can be played via command line. Users can choose whether to play a game. This game is called Mastermind, where the user needs to guess a secret passcode. Once they are playing, they can either make a guess or request to print the history. The program will let them know how accurate the guess is, and they can make successive guesses until they run out of attempts or get the correct code.
+
+Class diagram:
+There will be 7 classes in this program.
+-A Driver class, which runs the program
+-A Game class, that outputs text to the screen while in the game
+-A Mastermind class, which decides what should be output based on the user input and formats the Code data
+-A Code class, that generates codes and compares the secret code with the user input
+-A Strings class, filled with the prompts that will be output to the screen
+-A GameConfiguration class, which sets various variables about the game like the length of the code and the allowed characters list
+-A SecretCodeGenerator class, which creates a secret code from the allowed characters list
+
+Sequence Diagram:
+The Driver class contains the main method. Once a new game is started, an instance of the Game class takes over output. It calls the Mastermind class with input from the user and outputs results to the screen. The Game class also uses String constants from the Strings class. The Mastermind class formats output as required and manages Code objects as necessary. The Code class can construct new Codes and calls the SecretCodeGenerator class to generate the secret code required for the game. It also compares a given guess for the code to the secret code itself and returns the number of black and white pegs to the Mastermind class to be formatted.

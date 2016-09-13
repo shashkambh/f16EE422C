@@ -14,7 +14,7 @@ public class Game extends Mastermind{
         System.out.println(Strings.codeGenString);
         System.out.println();
         while(!won && guessesLeft > 0){
-            System.out.println("You have " + guessesLeft + " guesses left.");
+            System.out.println("You have " + guessesLeft + (guessesLeft != 1? " guesses" : " guess") + " left.");
             if(debugMode){
                 System.out.println(secretCode.getCode());
             }
@@ -27,25 +27,6 @@ public class Game extends Mastermind{
         }
         if(!won){
             System.out.println(Strings.losingMessage);
-        }
-    }
-
-    public static void main(String[] args){
-        System.out.print(Strings.introString);
-        Scanner scan=new Scanner(System.in);
-        String playing=scan.nextLine();
-        Game currentGame;
-
-        while(!playing.equals("N")){
-            if(playing.equalsIgnoreCase("Y")){
-                currentGame=new Game(false);
-                currentGame.runGame(scan);
-            } else if(playing.equalsIgnoreCase("password")){
-                currentGame=new Game(true);
-                currentGame.runGame(scan);
-            }
-            System.out.print(Strings.anotherGame);
-            playing=scan.nextLine();
         }
     }
 }

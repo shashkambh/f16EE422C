@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Driver {
 	public static void main(String[] args){
-		boolean devMode=args != null && args.length>0 && args[0].equals("1");
+		boolean devMode = args.length > 0 && args[0].equals("1");
 
         System.out.print(Strings.introString);
         Scanner scan=new Scanner(System.in);
