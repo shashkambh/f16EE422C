@@ -11,13 +11,14 @@ public class Game extends Mastermind{
 
     public void runGame(Scanner input){
         boolean won=false;
-        System.out.println(Strings.codeGenString);
+        String codeGenOut=Strings.codeGenString;
+        if(debugMode){
+            codeGenOut+="(for this example the secret code is " + "\n" + getSecretCodeString() + ")";
+        }
+        System.out.println(codeGenOut);
         System.out.println();
-        while(!won && guessesLeft > 0){
-            System.out.println("You have " + guessesLeft + (guessesLeft != 1? " guesses" : " guess") + " left.");
-            if(debugMode){
-                System.out.println(secretCode.getCode());
-            }
+        while(!won && getGuessesLeft() > 0){
+            System.out.println("You have " + getGuessesLeft() + (getGuessesLeft() != 1? " guesses" : " guess") + " left.");
             System.out.print(Strings.promptString);
             String userGuess=input.nextLine();
             String result=parseInput(userGuess);

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 public class Mastermind{
 
 	private ArrayList<Code> previousGuesses;
-	protected Code secretCode;
-	protected int guessesLeft;
+	private Code secretCode;
+	private int guessesLeft;
 
 	public Mastermind(){
 		previousGuesses=new ArrayList<>();
@@ -13,6 +13,14 @@ public class Mastermind{
         secretCode=Code.randomGenerateSecretCode();
 	}
 	
+    public String getSecretCodeString(){
+        return secretCode.getCode();
+    }
+
+    public int getGuessesLeft(){
+        return guessesLeft;
+    }
+
 	public String parseInput(String in){
 		String toPrint;
 		if(in.equalsIgnoreCase("history")){
@@ -37,7 +45,7 @@ public class Mastermind{
 		String listOfGuesses="";
 
 		for(Code e : previousGuesses){
-			listOfGuesses+=e.getCode() + "\t\t" + e.getPegString() + "\n";
+			listOfGuesses+=e.getCode() + "\t\t" + e.getBlackPegs() + "B_" + e.getWhitePegs() + "w" + "\n";
 		}
 		return listOfGuesses;
 	}
