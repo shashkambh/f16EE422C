@@ -2,7 +2,7 @@ package assignment2;
 public class Strings{
     public static final String anotherGame="Do you want to play again? (Y/N):";
 	public static final String codeGenString="Generating secret code...";
-	public static final String losingMessage="Sorry, you are out of guesses. You lose, boo-hoo.";
+	public static final String losingMessage="(Sorry, you are out of guesses. You lose, boo-hoo.)";
 	public static final String promptString="What is your next guess?\n"+ 
 "Type in the characters for your guess and press enter.\nEnter guess:";
 	public static final String introString="Welcome to Mastermind. Here are the rules.\n\n"+

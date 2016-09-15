@@ -45,8 +45,9 @@ public class Mastermind{
 		String listOfGuesses="";
 
 		for(Code e : previousGuesses){
-			listOfGuesses+=e.getCode() + "\t\t" + e.getBlackPegs() + "B_" + e.getWhitePegs() + "w" + "\n";
+			listOfGuesses+=e.getCode() + "\t\t" + e.getBlackPegs() + "B_" + e.getWhitePegs() + "W" + "\n";
 		}
+        listOfGuesses=listOfGuesses.substring(0, listOfGuesses.length()-1);
 		return listOfGuesses;
 	}
 
