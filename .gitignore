@@ -1,2 +1,7 @@
 *.class
 *.pdf
+*.txt
+Makefile
+*.o
+a.out
+*.in

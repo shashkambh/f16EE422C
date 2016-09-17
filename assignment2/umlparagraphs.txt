@@ -13,3 +13,24 @@ There will be 7 classes in this program.
 
 Sequence Diagram:
 The Driver class contains the main method. Once a new game is started, an instance of the Game class takes over output. It calls the Mastermind class with input from the user and outputs results to the screen. The Game class also uses String constants from the Strings class. The Mastermind class formats output as required and manages Code objects as necessary. The Code class can construct new Codes and calls the SecretCodeGenerator class to generate the secret code required for the game. It also compares a given guess for the code to the secret code itself and returns the number of black and white pegs to the Mastermind class to be formatted.
+
+Submission instructions:
+Please make sure that your submission to Canvas looks exactly as described below. This will help automate our grader.
+The ONLY file you should submit is Project2_EID.zip and when we unzip Project2_EID.zip it should look like this:
+
+  Project2_EID/
+      src/
+          assignment2/
+              file1
+              file2
+              ...
+      uml1
+      uml2
+      ...
+
+Do not submit your SecretCodeGenerator.java file.
+Make sure that there is a Driver.java file.
+Remember to submit your code such that it is not running in 'debug' mode.
+Remember to remove any other debugging code that prints to STDOUT.
+
+Please direct any questions you may have about how to submit your project in this post.
