@@ -2,13 +2,24 @@ package assignment2;
 
 import java.util.Scanner;
 
+/**
+ * This class uses the termal to interface with the user.
+ */
 public class Game extends Mastermind{
     private boolean debugMode;
-    
+
+	/**
+	 * Sole constructor.
+	 * @param startDebugMode Set to true if the user wants to enter Developer Mode, 
+	 * where the secret code is output to the screen.
+	 */
     public Game(boolean startDebugMode){
         debugMode=startDebugMode;
     }
-
+	/**
+	 * Runs the given Game to completion.
+	 * @param input The scanner to read from for user input.
+	 */
     public void runGame(Scanner input){
         boolean won=false;
         String codeGenOut=Strings.codeGenString;

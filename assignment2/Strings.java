@@ -1,7 +1,12 @@
 package assignment2;
+
+/**
+ * The game contains a lot of static Strings to explain the rules to the user.
+ * They are stored here for easy access.
+ */
 public class Strings{
     public static final String anotherGame="Do you want to play again? (Y/N):";
-	public static final String codeGenString="Generating secret code...";
+	public static final String codeGenString="Generating secret code....";
 	public static final String losingMessage="(Sorry, you are out of guesses. You lose, boo-hoo.)";
 	public static final String promptString="What is your next guess?\n"+ 
 "Type in the characters for your guess and press enter.\nEnter guess:";

@@ -1,12 +1,27 @@
 package assignment2;
+
+/**
+ * This class manages the guesses that the user makes.
+ * It compares a given guess with a generated secret Code.
+ */
 public class Code{
 	private String code;
 	private int blackPegs;
 	private int whitePegs;
 	private boolean valid;
 
+	/**  
+	 * Sole constructor. Prevent external classes from constructing Codes.
+	 */
 	private Code(){ }
 
+	/**
+	 * Converts a given input string to a Code. Also sets the number of black
+	 * and white pegs based on the secret Code given.
+	 * @param toCode The input string to be converted to the code.
+	 * @param secretCode The secret Code that the new Code will be checked against.
+	 * @return A new Code with validity checked and number of pegs set.
+	 */
 	public static Code convertToCode(String toCode, Code secretCode){
 		Code newCode=new Code();
 		newCode.code=toCode;
@@ -18,6 +33,10 @@ public class Code{
 		return newCode;
 	}
 
+	/**
+	 * Generates a secret Code based on a random number generator.
+	 * @return A randomly generated secret Code for the player to guess.
+	 */
 	public static Code randomGenerateSecretCode(){
 		String secretCodeString=SecretCodeGenerator.getInstance().getNewSecretCode();
 		Code secretCode=new Code();
@@ -29,22 +48,42 @@ public class Code{
 		return secretCode;
 	}
 
+	/**
+	 * Returns the String representing the Code.
+	 * @return the String that represents the guess
+	 */
 	public String getCode(){
 		return code;
 	}
 
+	/**
+	 * Returns the number of black pegs that the Code gets
+	 * @return the number of letters that matched exactly with the secret Code
+	 */
 	public int getBlackPegs(){
 		return blackPegs;
 	}
 
+	/**
+	 * Returns the number of white pegs that the Code gets
+	 * @return the number of letters that matched at different locations with the secret Code
+	 */
 	public int getWhitePegs(){
 		return whitePegs;
 	}
 
+	/**
+	 * Returns if the String given to the Code construction was a valid guess
+	 * @return true if the guess was valid, false otherwise
+	 */
 	public boolean isValidCode(){
 		return valid;
 	}
 
+	/**
+	 * Produces a String for the user to view about the number of pegs
+	 * @return A formatted output String that shows the number of pegs to the user.
+	 */
 	public String getPegString(){
 		String pegString="Result: ";
 		if(!valid){
@@ -71,7 +110,11 @@ public class Code{
 		}
 		return pegString;
 	}
-
+	/**
+	 * Checks if a String is a valid Code guess.
+	 * @param possibleCode The string to be checked.
+	 * @return True if the String is a valid Code, false otherwise
+	 */
 	private static boolean isValid(String possibleCode){
 		boolean correctLength = (possibleCode.length() == GameConfiguration.pegNumber);
 		boolean validChars = true;
@@ -87,7 +130,10 @@ public class Code{
 		}
 		return validChars && correctLength;
 	}
-
+	/**
+	 * Checks how many pegs should be set for the Code based on the secret Code.
+	 * @param secretCode the secret code to be checked against.
+	 */
 	private void check(Code secretCode){
 		this.blackPegs = 0;
 		this.whitePegs = 0;
