@@ -1,3 +1,10 @@
+
+/** EE422C Project 2 (Mastermind) submission by
+ *  Shashank Kambhampati
+ *  Slip days used: 0
+ *  Fall 2016
+ */
+
 package assignment2;
 
 import java.util.Scanner;
@@ -8,7 +15,7 @@ import java.util.Scanner;
 public class Game extends Mastermind{
     private static final String CODE_GEN="Generating secret code....";
     private static final String PROMPT="What is your next guess?\n"+ 
-"Type in the characters for your guess and press enter.\nEnter guess:";
+        "Type in the characters for your guess and press enter.\nEnter guess:";
     private static final String LOSING_MESSAGE="(Sorry, you are out of guesses. You lose, boo-hoo.)";
 
     private boolean debugMode;
@@ -32,15 +39,18 @@ public class Game extends Mastermind{
             codeGenOut+="(for this example the secret code is " + "\n" + getSecretCodeString() + ")";
         }
         System.out.println(codeGenOut);
-		int guessesLeft=getGuessesLeft();
-        while(!won && guessesLeft > 0){
+
+		int guesses=getGuessesLeft();
+        while(!won && guesses > 0){
             System.out.println();
-            System.out.println("You have " + guessesLeft + (guessesLeft != 1? " guesses" : " guess") + " left.");
+            System.out.println("You have " + guesses+ (guesses != 1 ? " guesses" : " guess") + " left.");
             System.out.print(PROMPT);
             String userGuess=input.nextLine();
+
             String result=parseInput(userGuess);
             won=result.contains("You win");
             System.out.println(result);
+			guesses=getGuessesLeft();
         }
         if(!won){
             System.out.println(LOSING_MESSAGE);

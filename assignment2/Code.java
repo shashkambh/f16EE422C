@@ -1,3 +1,9 @@
+/** EE422C Project 2 (Mastermind) submission by
+ *  Shashank Kambhampati
+ *  Slip days used: 0
+ *  Fall 2016
+ */
+
 package assignment2;
 
 /**

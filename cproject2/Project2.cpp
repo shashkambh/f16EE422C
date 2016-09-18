@@ -32,21 +32,21 @@ int32_t isOurs(const char* s) {
  * the characters from 'src' and return a pointer to the first character of actual string data */
 char* utstrdup(const char* src) {
 
-	/* Find length of src */
-	uint32_t len = 0;
-	while(src[len] != 0){
-		len++;
-	}
-	
-	/* Allocate memory */
-	String* newUtString = (String*)malloc(sizeof(String)+len);
+    /* Find length of src */
+    uint32_t len = 0;
+    while(src[len] != 0){
+        len++;
+    }
+    
+    /* Allocate memory */
+    String* newUtString = (String*)malloc(sizeof(String)+len);
 
-	/* Set properties and copy over data */
-	newUtString->check = SIGNATURE;
-	newUtString->capacity = len;
-	utstrcpy(newUtString->data, src);
+    /* Set properties and copy over data */
+    newUtString->check = SIGNATURE;
+    newUtString->capacity = len;
+    utstrcpy(newUtString->data, src);
 
-	return newUtString->data;
+    return newUtString->data;
 }
 
 /* the parameter 'utstr' must be a utstring. Find the length of this string by accessing the meta-data
@@ -54,7 +54,7 @@ char* utstrdup(const char* src) {
 uint32_t utstrlen(const char* utstr) {
     int length = -1;
 
-	/* Accesses metadata to get length. If metadata not present, returns -1. */
+    /* Accesses metadata to get length. If metadata not present, returns -1. */
     if(isOurs(utstr)){
         String* strWithData = STRING(utstr);
         length = strWithData->length;
@@ -68,19 +68,19 @@ uint32_t utstrlen(const char* utstr) {
  * and then return s */
 char* utstrcat(char* s, const char* suffix) {
     char* stringOut_r = s;
-	/* If not a utstring, do nothing */
+    /* If not a utstring, do nothing */
     if(isOurs(s)){
         String* strWithData = STRING(s);
         uint32_t numCharsAdded = 0;
         uint32_t suffixLength = 0;
 
-		/* Find length of suffix */
+        /* Find length of suffix */
         while(suffix[suffixLength] != 0){
             suffixLength++;
         }
 
-		/* While not at end of suffix and still have more room, add a character */
-        while(numCharsAdded < suffixLength && strWithData->length < strWithData->capacity){
+        /* While not at end of suffix and still have more room, add a character */
+        while((numCharsAdded < suffixLength) && (strWithData->length < strWithData->capacity)){
             strWithData->data[strWithData->length] = suffix[numCharsAdded];
             numCharsAdded++;
             strWithData->length++;
@@ -113,7 +113,7 @@ char* utstrcpy(char* dst, const char* src) {
  * (i.e., locate the start of the chunk and call free to dispose of the chunk, note that the start of
  * the chunk will be 12 bytes before *self) */
 void utstrfree(char* self) {
-	/* If self is a utstring, free the entire struct */
+    /* If self is a utstring, free the entire struct */
     if(isOurs(self)){
         String* strWithData = STRING(self);
         free(strWithData);
@@ -130,7 +130,7 @@ void utstrfree(char* self) {
 char* utstrrealloc(char* s, uint32_t new_capacity) {
     char* stringOut_r = s;
 
-	/* If s is a utrstring and has less space than new_capacity, then reallocate and update capacity */
+    /* If s is a utrstring and has less space than new_capacity, then reallocate and update capacity */
     if(isOurs(s)){
         String* strWithData = STRING(s);
         if(strWithData->capacity < new_capacity){
