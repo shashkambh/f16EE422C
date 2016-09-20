@@ -1,0 +1,1 @@
+g++ -D READY_FOR_STAGE_4 main.cpp Project2.cpp -o test

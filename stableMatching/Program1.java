@@ -1,6 +1,6 @@
 /*
- * Name: <your name>
- * EID: <your EID>
+ * Name: Shashank Kambhampati
+ * EID: skk834
  */
 
 import java.util.ArrayList;
@@ -27,20 +27,27 @@ public class Program1 extends AbstractProgram1 {
 	 * @return true if the Matching is stable, false otherwise
      */
     public boolean isStableMatching(Matching marriage) {
-		List<List <Integer>> listOfMen = marriage.getMenPreference();
-		List<List <Integer>> listOfWomen = marriage.getWomanPreference();
-		List<Integer> matchings = marriage.getWomenMatching();
+		ArrayList <ArrayList <Integer>> listOfMen = marriage.getMenPreference();
+		ArrayList <ArrayList <Integer>> listOfWomen = marriage.getWomenPreference();
+		ArrayList <Integer> matchings = marriage.getWomenMatching();
 		boolean stable=true;
 		
 		for(int currentMan = 0; currentMan < listOfMen.size() && stable; currentMan++){
+			ArrayList <Integer> manPrefList=listOfMen.get(currentMan);
+			
 			//Get who currentMan is paired with
 		    int pairedWithMan = matchings.indexOf(currentMan);
 
 			//Get where currentMan's partner is in his preference list
-			int partnerLocation = listOfMen.get(currentMan).indexOf(pairedWoman);
+			int partnerLocation = manPrefList.indexOf(pairedWithMan);
 
-			for(int woman = 0; woman < partnerLocation; woman++){
-				if(listOfWomen.get(listOfMen.get(man).get(woman)).indexOf(currentMan) > matchings.get(woman)){
+			//Check all women that given man prefers to his current partner
+			for(int womanInPrefList = 0; womanInPrefList < partnerLocation; womanInPrefList++){
+				int woman=manPrefList.get(womanInPrefList);
+				ArrayList <Integer> womanPrefList=listOfWomen.get(woman);
+				
+				//If said woman prefers him to her current partner, matching is unstable
+				if(womanPrefList.indexOf(currentMan) > womanPrefList.indexOf(matchings.get(woman))){
 					stable = false;
 				}
 			}		
@@ -59,7 +66,59 @@ public class Program1 extends AbstractProgram1 {
      * @return A stable Matching.
      */
     public Matching stableMarriageGaleShapley(Matching marriage) {
-        /* TODO implement this function */
-        return null; /* TODO remove this line */
+		ArrayList <ArrayList <Integer>> listOfMen = marriage.getMenPreference();
+		ArrayList <ArrayList <Integer>> listOfWomen = marriage.getWomenPreference();
+		ArrayList <Integer> matchings = new ArrayList<>();
+		
+		int[] proposals = new int[listOfMen.size()];
+		matchings.clear();
+		ArrayList <Integer> menQueue=new ArrayList<>();
+		for(int i = 0; i < listOfMen.size(); i++){
+			matchings.add(-1);
+			menQueue.add(i);
+		}
+
+
+		while(!listOfMen.isEmpty()){
+			int manNumber = menQueue.get(0);
+			int womanNumber = listOfMen.get(manNumber).get(proposals[manNumber]);
+			proposals[manNumber]++;
+
+			int currentEngageNumber = matchings.get(womanNumber);
+			
+			if(currentEngageNumber == -1){
+				matchings.set(womanNumber, manNumber);
+			} else {
+			    ArrayList <Integer> womanPrefList = listOfWomen.get(womanNumber);
+				int currentEngageRank = listOfWomen.indexOf(currentEngageNumber);
+				int proposerRank = listOfWomen.indexOf(manNumber);
+
+				if(currentEngageRank > proposerRank){
+					matchings.set(womanNumber, manNumber);
+					menQueue.add(currentEngageNumber);
+				} else {
+					menQueue.add(manNumber);
+				}
+			}
+			
+		}
+
+		marriage.setWomanMatching(matchings);
+		
+		return marriage;
     }
+
+	public static ArrayList <ArrayList <Integer>> deepCopy(ArrayList <ArrayList <Integer>> prefTable){
+		ArrayList <ArrayList <Integer>> copied=new ArrayList<>();
+
+		for(ArrayList <Integer> person : prefTable){
+			copied.add(new ArrayList <Integer>());
+
+			for(int pref : person){
+				copied.get(copied.size()-1).add(pref);
+			}
+		}
+
+		return copied;
+	}
 }
