@@ -27,29 +27,40 @@ public class Program1 extends AbstractProgram1 {
 	 * @return true if the Matching is stable, false otherwise
      */
     public boolean isStableMatching(Matching marriage) {
+        // Get lists out of Matching object for easy access
 		ArrayList <ArrayList <Integer>> listOfMen = marriage.getMenPreference();
 		ArrayList <ArrayList <Integer>> listOfWomen = marriage.getWomenPreference();
 		ArrayList <Integer> matchings = marriage.getWomenMatching();
 		boolean stable=true;
 		
+        // Go through each man one at a time and check if they are in an instablity
 		for(int currentMan = 0; currentMan < listOfMen.size() && stable; currentMan++){
+            // Get currentMan preference list
 			ArrayList <Integer> manPrefList=listOfMen.get(currentMan);
 			
-			//Get who currentMan is paired with
+			// Get who currentMan is paired with
 		    int pairedWithMan = matchings.indexOf(currentMan);
 
-			//Get where currentMan's partner is in his preference list
-			int partnerLocation = manPrefList.indexOf(pairedWithMan);
+			// Get where currentMan's partner is in his preference list
+			int partnerRanking = manPrefList.get(pairedWithMan);
 
-			//Check all women that given man prefers to his current partner
-			for(int womanInPrefList = 0; womanInPrefList < partnerLocation; womanInPrefList++){
-				int woman=manPrefList.get(womanInPrefList);
-				ArrayList <Integer> womanPrefList=listOfWomen.get(woman);
-				
-				//If said woman prefers him to her current partner, matching is unstable
-				if(womanPrefList.indexOf(currentMan) > womanPrefList.indexOf(matchings.get(woman))){
-					stable = false;
-				}
+			// Run through each woman
+			for(int currentWoman = 0; currentWoman < manPrefList.size(); currentWoman++){
+                // If currentMan prefers currentWoman to his current partner, 
+                // there might be an instability
+				int womanRanking=manPrefList.get(currentWoman);
+
+                if(partnerRanking > womanRanking){
+
+                    ArrayList <Integer> womanPrefList=listOfWomen.get(currentWoman);
+                    
+                    int womanPairedWith = matchings.get(currentWoman);
+
+                    // If said woman prefers him to her current partner, matching is unstable
+                    if(womanPrefList.get(currentMan) < womanPrefList.get(womanPairedWith)){
+                        stable = false;
+                    }
+                }
 			}		
 		}
 
@@ -66,33 +77,47 @@ public class Program1 extends AbstractProgram1 {
      * @return A stable Matching.
      */
     public Matching stableMarriageGaleShapley(Matching marriage) {
+        // Get lists out of Matching object for easy access
 		ArrayList <ArrayList <Integer>> listOfMen = marriage.getMenPreference();
 		ArrayList <ArrayList <Integer>> listOfWomen = marriage.getWomenPreference();
 		ArrayList <Integer> matchings = new ArrayList<>();
 		
-		int[] proposals = new int[listOfMen.size()];
-		matchings.clear();
+        // Keeps track of the last person that a given man proposed to
+		int[] lastProposed = new int[listOfMen.size()];
+
+        // Initialize lists needed to create matchings
+        // No one is matched yet, no one proposed, and all males are in the menQueue
 		ArrayList <Integer> menQueue=new ArrayList<>();
 		for(int i = 0; i < listOfMen.size(); i++){
 			matchings.add(-1);
 			menQueue.add(i);
+            lastProposed[i] = -1;
 		}
 
+        // While there is a free man, choose such a free man and have him make his next proposal.
+		while(!menQueue.isEmpty()){
+			int manNumber = menQueue.remove(0);
+			ArrayList<Integer> manPreference = listOfMen.get(manNumber);
+            int womanNumber = getNextProposal(manPreference, lastProposed[manNumber]);
 
-		while(!listOfMen.isEmpty()){
-			int manNumber = menQueue.get(0);
-			int womanNumber = listOfMen.get(manNumber).get(proposals[manNumber]);
-			proposals[manNumber]++;
+            // Store who he proposed to so he can decide his next proposal
+			lastProposed[manNumber] = womanNumber;
 
+            // Get who w is currently engaged to
 			int currentEngageNumber = matchings.get(womanNumber);
 			
+            // If w is free, m and w become engaged.
 			if(currentEngageNumber == -1){
 				matchings.set(womanNumber, manNumber);
 			} else {
 			    ArrayList <Integer> womanPrefList = listOfWomen.get(womanNumber);
-				int currentEngageRank = listOfWomen.indexOf(currentEngageNumber);
-				int proposerRank = listOfWomen.indexOf(manNumber);
-
+				int currentEngageRank = womanPrefList.get(currentEngageNumber);
+				int proposerRank = womanPrefList.get(manNumber);
+                
+                // If w prefers m to m'(her current partner), 
+                // m and w become engaged and m' becomes single.
+                // Else m remains single.
+                // Whoever is left single at the end goes back to the menQueue.
 				if(currentEngageRank > proposerRank){
 					matchings.set(womanNumber, manNumber);
 					menQueue.add(currentEngageNumber);
@@ -107,18 +132,35 @@ public class Program1 extends AbstractProgram1 {
 		
 		return marriage;
     }
+    
 
-	public static ArrayList <ArrayList <Integer>> deepCopy(ArrayList <ArrayList <Integer>> prefTable){
-		ArrayList <ArrayList <Integer>> copied=new ArrayList<>();
+    /**
+     * Gets the next proposal for the given man
+     * @param manPrefList The preference list for the man in question
+     * @param lastProposed The last person the man proposed to
+     * @return The next person that the man will propose to
+     */
+    public static int getNextProposal(ArrayList <Integer> manPrefList, int lastProposed){
+        int ranking = 1;
 
-		for(ArrayList <Integer> person : prefTable){
-			copied.add(new ArrayList <Integer>());
-
-			for(int pref : person){
-				copied.get(copied.size()-1).add(pref);
-			}
+        // If m has already proposed, then the current ranking 
+        // he is on is that of the last woman he proposed to
+        if(lastProposed != -1) {
+            ranking = manPrefList.get(lastProposed);
+        }
+        
+        // Next proposal is to next wonam on prefList of the same ranking as last proposal
+        int nextWoman = manPrefList.subList(lastProposed + 1, manPrefList.size()).indexOf(ranking);
+        
+        // If there is no one left of the current ranking, m goes to next ranking
+        // Else index needs to be adjusted because of search method
+        if(nextWoman == -1){
+            nextWoman = manPrefList.indexOf(ranking + 1);
+        } else {
+			nextWoman += lastProposed + 1;
 		}
+		
+        return nextWoman;
+    }
 
-		return copied;
-	}
 }

@@ -14,7 +14,7 @@ import java.util.Scanner;
 public class Driver {
 
     public static final String ANOTHER_GAME="Do you want to play again? (Y/N):";
-    public static final String PLAY="Do you want to play? (Y/N):";
+    public static final String PLAY="Do>you want to play? (Y/N):";
     public static final String INTRO="Welcome to Mastermind. Here are the rules.\n\n" +
         "This is a text version of the classic board game Mastermind.\n" +
         "The computer will think of a secret code. The code consists of 4\ncolored pegs.\n" +

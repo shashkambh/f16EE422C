@@ -121,10 +121,12 @@ void testStage4(void) {
 	// printf("crashing with utstrlen\n\n\n"); utstrlen("Hello World");	
 	// printf("crashing with utstrcpy\n\n\n"); utstrcpy(p, "Hello World");
 	// printf("crashing with utstrcat\n\n\n"); utstrcat(p, "Hello World");
-	// printf("crashing with utstrfree\n\n\n"); utstrfree((char *)malloc(20));
+	printf("crashing with utstrfree\n\n\n"); utstrfree((char *)malloc(20));
 	// printf("crashing with utstrrealloc\n\n\n"); utstrrealloc((char *)malloc(20), 40);
 }
 #endif /* READY_FOR_STAGE_4 */
+
+
 
 void testStage5(){
     const char* compareString="Hello World! 1234234fe56760987654 \n\t\\()*=+";
@@ -160,13 +162,86 @@ void testStage5(){
 
     utstrfree(p);
 }
+#define large 500
+void selftest2(){
+    char* first = utstrdup("");
+    char* second = utstrdup("");
+    for (int i = 0; i < large; i++){
+        first = utstrrealloc(first, i);
+        if (i%32 == 0){
+            first = utstrcat(first,  "*");
+        }
+        else{
+            first = utstrcat(first, "@");
+        }
+    }
+    for (int i = 0; i < large; i++){
+        second = utstrrealloc(second, i);
+        second = utstrcpy(second, first);
+    }
+    
+    int check = 1;
+    for(int i = 0; i< large; i++){
+        if (first[i] != second[i]){
+        /*you shouldn't be here*/
+        check = 0;
+        }
+    }
+    if (check){
+    printf("nice\n");
+    }
 
+    else {
+    printf("check your code\n");
+    }
+    
+    utstrfree(first);
+    utstrfree(second);
+}
+void selftest3() {
+   	int i = 0, j = 0;
+    	char* s1 = utstrdup("Hello");
+    	s1 = utstrrealloc(s1, 11);
+    	char* s2 = utstrdup(s1);
+    	utstrcat(s2, " world");
+	while ((s1[i] != 0) || (s2[j] != 0))
+ 	{
+ 		i++; 
+ 		j++;
+ 	}
+ 
+ 	if (i == j) {
+ 		printf("Pass: selftest3\n"); 
+ 	}
+ 	else {
+ 		printf("check selftest3\n"); 
+ 	}
+    utstrfree(s1);
+    utstrfree(s2);
+}
+void selftest4() {
+	 char* s0 = utstrdup("apple");
+	 char* s1 = utstrdup("pie");
+	 utstrcpy(s0, s1);
+ 
+	 if (strlen(s0) == 3) {
+		 printf("Pass: selftest4"); 
+	 } 
+	 else {
+		 printf("Check selftest4"); 
+	 }
+     utstrfree(s0);
+     utstrfree(s1);
+}
 int main(void) {
   	testStage1();
  	testStage2();
   	testStage3();
 
     testStage5();
+	selftest2();
+	selftest3();
+	selftest4();
 
 #ifdef READY_FOR_STAGE_4	
 	testStage4();
